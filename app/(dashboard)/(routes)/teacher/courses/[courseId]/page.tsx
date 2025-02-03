@@ -9,6 +9,7 @@ import ImageForm from "./_components/image-form";
 import CategoryForm from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
+import Chaptersform from "./_components/chapters-form";
 
 const CourseIdPage = async ({
     params,
@@ -28,6 +29,11 @@ const CourseIdPage = async ({
       id: courseId
     },
     include: {
+      chapters: {
+        orderBy: {
+          position: "asc",
+        }
+      },
       attachments: {
         orderBy: {
           createdAt: "desc",
@@ -42,8 +48,6 @@ const CourseIdPage = async ({
     }
   });
 
-  console.log(categories)
-
   if (!course) {
     return redirect("/");
   }
@@ -54,6 +58,7 @@ const CourseIdPage = async ({
     course.imageUrl,
     course.price,
     course.categoryId,
+    course.chapters.some(chapter => chapter.isPublished),
   ];
 
   const totalFields = requiredFields.length;
@@ -109,7 +114,10 @@ const CourseIdPage = async ({
             </h2>
           </div>
           <div>
-            TODO: Add chapters
+            <Chaptersform
+              initialData={course}
+              courseId={course.id}
+            />
           </div>
           <div className="flex items-center gap-x-2">
             <IconBadge icon={CircleDollarSign}/>
