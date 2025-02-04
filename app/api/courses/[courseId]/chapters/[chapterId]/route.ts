@@ -5,11 +5,10 @@ import { db } from "@/lib/db";
 
 export async function PATCH(
   req: Request,
-  params : Promise<{ courseId: string; chapterId: string }>
+  { params }: { params: { courseId: string, chapterId: string }}
 ) {
   try {
     const { userId } = await auth();
-    const { courseId, chapterId } = await params; 
     const { isPublished, ...values } = await req.json();
 
     if(!userId) {
@@ -18,7 +17,7 @@ export async function PATCH(
 
     const ownCourse = await db.course.findUnique({
       where: {
-        id: courseId,
+        id: params.courseId,
         userId,
       }
     });
@@ -29,8 +28,8 @@ export async function PATCH(
     
     const chapter = await db.chapter.update({
       where: {
-        id: chapterId,
-        courseId: courseId,
+        id: params.chapterId,
+        courseId: params.courseId,
       },
       data: {
         ...values,
