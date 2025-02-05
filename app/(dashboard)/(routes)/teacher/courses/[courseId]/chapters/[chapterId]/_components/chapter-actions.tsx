@@ -35,8 +35,6 @@ export const ChapterActions = ({
         await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
         toast.success("Chapter published successfully");
       }
-
-      toast.success("Chapter updated successfully");
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
@@ -61,7 +59,7 @@ export const ChapterActions = ({
   return (
     <div className="flex items-center gap-x-2">
       <Button
-        onClick={() => {}}
+        onClick={onClick}
         disabled={disabled || isLoading}
         variant="outline"
         size="sm"
