@@ -9,6 +9,7 @@ import {
 } from '@clerk/nextjs'
 import './globals.css'
 import ToasterProvider from "@/components/providers/toaster-provider";
+import { ConfettiProvider } from "@/components/providers/confetti-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +25,7 @@ export default function RootLayout({
     <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
         <body>
+          <ConfettiProvider />
           <ToasterProvider />
           {children}
         </body>

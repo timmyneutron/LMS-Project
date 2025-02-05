@@ -2,6 +2,7 @@
 
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { Button } from "@/components/ui/button";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,31 +10,31 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { set } from "zod";
 
-interface ChapterActionsProps {
+interface ActionsProps {
   disabled: boolean;
   courseId: string;
-  chapterId: string;
   isPublished: boolean;
 };
 
-export const ChapterActions = ({
+export const Actions = ({
   disabled,
   courseId,
-  chapterId,
   isPublished,
-} : ChapterActionsProps) => {
+} : ActionsProps) => {
   const router = useRouter();
+  const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
     try {
       setIsLoading(true);
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
-        toast.success("Chapter unpublished successfully");
+        await axios.patch(`/api/courses/${courseId}/unpublish`);
+        toast.success("Course unpublished successfully");
       } else {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
-        toast.success("Chapter published successfully");
+        await axios.patch(`/api/courses/${courseId}/publish`);
+        toast.success("Course published successfully");
+        confetti.onOpen();
       }
       router.refresh();
     } catch (error) {
@@ -46,10 +47,10 @@ export const ChapterActions = ({
   const onDelete = async () => {
     try {
       setIsLoading(true);
-      axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
+      axios.delete(`/api/courses/${courseId}`);
       toast.success("Chapter deleted successfully");
       router.refresh();
-      router.push(`/teacher/courses/${courseId}`);
+      router.push(`/teacher/courses`);
     } catch (error) {
       toast.error("Failed to delete chapter");
     } finally {
