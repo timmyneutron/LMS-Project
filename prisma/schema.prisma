@@ -1,10 +1,11 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 model Course {
@@ -22,6 +23,8 @@ model Course {
   category Category? @relation(fields: [categoryId], references: [id])
   chapters Chapter[]
   purchases Purchase[]
+
+  @@index([categoryId])
 }
 
 model Category {
