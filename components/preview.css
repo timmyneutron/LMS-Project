@@ -1,0 +1,7 @@
+.quill {
+  .ql-disabled {
+    .ql-editor {
+      padding: 0;
+    }
+  }
+}
