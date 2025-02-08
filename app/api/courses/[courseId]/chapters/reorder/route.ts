@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PUT(
   req: Request,
-  { params } : { params: { courseId: string; }}
+  { params }: { params: { courseId: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -13,14 +13,20 @@ export async function PUT(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { list } = await req.json();
+    const { courseId } = await params;
 
     const ownCourse = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId: userId,
       }
     });
+
+    if (!ownCourse) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const { list } = await req.json();
 
     for (let item of list) {
       await db.chapter.update({

@@ -11,10 +11,11 @@ export async function POST(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
+    const { courseId } = await params;
+    
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId: userId,
       }
     });

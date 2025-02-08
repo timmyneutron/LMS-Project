@@ -37,9 +37,11 @@ export async function PATCH(
       return new NextResponse("Missing required fields", { status: 401 });
     }
     
+    const { courseId } = await params;
+    
     const publishedCourse = await db.course.update({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId,
       },
       data: {

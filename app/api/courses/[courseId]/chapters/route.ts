@@ -8,26 +8,27 @@ export async function PATCH(
 ) {
   try {
     const { userId } = await auth();
-    const { title } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const courseOwner = await db.course.findUnique({
+    const { courseId } = await params;
+
+    const ownCourse = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId: userId,
       }
     });
 
-    if (!courseOwner) {
+    if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const lastChapter = await db.chapter.findFirst({
       where: {
-        courseId: params.courseId,
+        courseId: courseId,
       },
       orderBy: {
         position: "desc",
@@ -35,11 +36,12 @@ export async function PATCH(
     });
 
     const newPosition = lastChapter ? lastChapter.position + 1 : 1;
-
+    const { title } = await req.json();
+    
     const chapter = await db.chapter.create({
       data: {
         title,
-        courseId: params.courseId,
+        courseId: courseId,
         position: newPosition,
       }
     });
