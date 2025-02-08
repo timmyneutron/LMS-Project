@@ -13,9 +13,11 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { courseId, chapterId } = await params;
+    
     const ownCourse = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId,
       }
     });
@@ -26,14 +28,14 @@ export async function PATCH(
 
     const chapter = await db.chapter.findUnique({
       where: {
-        id: params.chapterId,
-        courseId: params.courseId,
+        id: chapterId,
+        courseId: courseId,
       }
     });
 
     const muxData = await db.muxData.findFirst({
       where: {
-        chapterId: params.chapterId,
+        chapterId: chapterId,
       }
     });
 
@@ -43,8 +45,8 @@ export async function PATCH(
 
     const publishedChapter = await db.chapter.update({
       where: {
-        id: params.chapterId,
-        courseId: params.courseId,
+        id: chapterId,
+        courseId: courseId,
       },
       data: {
         isPublished: true,

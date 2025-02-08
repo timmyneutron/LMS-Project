@@ -13,9 +13,11 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { courseId } = await params;
+
     const course = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId,
       },
       include: {
@@ -36,8 +38,6 @@ export async function PATCH(
     if (!course.title || !course.description || !course.imageUrl || !course.categoryId || !hasPublishedChapters) {
       return new NextResponse("Missing required fields", { status: 401 });
     }
-    
-    const { courseId } = await params;
     
     const publishedCourse = await db.course.update({
       where: {

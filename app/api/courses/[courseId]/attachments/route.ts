@@ -28,7 +28,7 @@ export async function POST(
       data: {
         url,
         name: url.split("/").pop(),
-        courseId: params.courseId,
+        courseId,
       }
     });
     NextResponse.json(attachment);
