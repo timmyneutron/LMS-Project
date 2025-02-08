@@ -48,11 +48,11 @@ export const Actions = ({
     try {
       setIsLoading(true);
       axios.delete(`/api/courses/${courseId}`);
-      toast.success("Chapter deleted successfully");
+      toast.success("Course deleted successfully");
       router.refresh();
       router.push(`/teacher/courses`);
     } catch (error) {
-      toast.error("Failed to delete chapter");
+      toast.error("Failed to delete course");
     } finally {
       setIsLoading(false);
     }

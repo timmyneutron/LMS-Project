@@ -2,11 +2,16 @@ import Mux from "@mux/mux-node";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { UTApi } from "uploadthing/server";
 
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
   tokenSecret: process.env.MUX_TOKEN_SECRET,
 });
+
+const utapi = new UTApi();
+
+const uploadThingRegex = /^https:\/\/utfs.io\/f\/(?<key>[a-zA-Z0-9]*)$/;
 
 export async function DELETE(
   req: Request,
@@ -38,6 +43,18 @@ export async function DELETE(
     if (!course) {
       return new NextResponse("Not Found", { status: 404 });
     }
+
+    const fileKeys = course.chapters
+      .filter(chapter => chapter.videoUrl)
+      .map(chapter => uploadThingRegex.exec(chapter.videoUrl!)?.groups?.key)
+      .filter(key => key !== undefined);
+
+    if (course.imageUrl) {
+      const imageKey = uploadThingRegex.exec(course.imageUrl)?.groups?.key;
+      if (imageKey) fileKeys.push(imageKey);
+    }
+
+    if (fileKeys.length > 0) await utapi.deleteFiles(fileKeys);
 
     for (const chapter of course.chapters) {
       if (chapter.muxData?.assetId) {
@@ -71,7 +88,6 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    console.log(courseId);
     const course = await db.course.update({
       where: {
         id: courseId,

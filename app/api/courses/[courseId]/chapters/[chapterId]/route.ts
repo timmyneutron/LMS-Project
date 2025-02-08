@@ -2,11 +2,14 @@ import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { UTApi } from "uploadthing/server";
 
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
   tokenSecret: process.env.MUX_TOKEN_SECRET
 });
+
+const utapi = new UTApi();
 
 export async function DELETE(
   req: Request,
@@ -42,7 +45,16 @@ export async function DELETE(
       return new NextResponse("Not Found", { status: 404 });
     }
 
+    console.log(chapter);
+
     if (chapter.videoUrl) {
+      const videoUrlRegex = /^https:\/\/utfs.io\/f\/(?<key>[a-zA-Z0-9]*)$/;
+      const key = videoUrlRegex.exec(chapter.videoUrl)?.groups?.key;
+
+      if (key) {
+        await utapi.deleteFiles(key);
+      }
+
       const muxData = await db.muxData.findFirst({
         where: {
           chapterId: chapterId,
