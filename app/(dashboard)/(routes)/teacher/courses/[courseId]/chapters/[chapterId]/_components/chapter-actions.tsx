@@ -46,9 +46,8 @@ export const ChapterActions = ({
   const onDelete = async () => {
     try {
       setIsLoading(true);
-      axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted successfully");
-      router.refresh();
       router.push(`/teacher/courses/${courseId}`);
     } catch (error) {
       toast.error("Failed to delete chapter");
