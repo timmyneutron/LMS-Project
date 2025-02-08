@@ -104,6 +104,7 @@ const DescriptionForm = ({
                     <Textarea
                       disabled={isSubmitting}
                       placeholder="e.g. &apos;This course is about...&apos;"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

@@ -89,7 +89,7 @@ const CategoryForm = ({
           "text-sm mt-2",
           !initialData.categoryId && "text-slate-500 italic"
         )}>
-          {initialData.description || "No category"}
+          {selectedOption?.label || "No category"}
         </p>
       )}
       {isEditing && (
