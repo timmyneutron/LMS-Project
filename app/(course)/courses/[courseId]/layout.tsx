@@ -11,7 +11,7 @@ const CourseLayout = async ({
   params,
 } : {
   children: React.ReactNode;
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) => {
   const { userId } = await auth();
 
@@ -19,9 +19,10 @@ const CourseLayout = async ({
     return redirect("/");
   }
   
+  const { courseId } = await params;
   const course = await db.course.findUnique({
     where: {
-      id: params.courseId,
+      id: courseId,
     },
     include: {
       chapters: {
