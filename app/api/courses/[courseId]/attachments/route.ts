@@ -4,15 +4,16 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  { params } : { params: { courseId: string } }) {
+  { params } : { params: Promise<{ courseId: string }> }) {
   try {
     const { userId } = await auth();
-    const { url } = await req.json();
+    
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const { courseId } = await params;
     
+    const { courseId } = await params;
+
     const courseOwner = await db.course.findUnique({
       where: {
         id: courseId,
@@ -23,6 +24,8 @@ export async function POST(
     if(!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const { url } = await req.json();
 
     const attachment = await db.attachment.create({
       data: {

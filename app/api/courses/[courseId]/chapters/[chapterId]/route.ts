@@ -13,7 +13,7 @@ const utapi = new UTApi();
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string, chapterId: string }}
+  { params }: { params: Promise<{ courseId: string, chapterId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -23,6 +23,7 @@ export async function DELETE(
     }
 
     const { courseId, chapterId } = await params;
+
     const ownCourse = await db.course.findUnique({
       where: {
         id: courseId,
@@ -104,7 +105,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string, chapterId: string }}
+  { params }: { params: Promise<{ courseId: string, chapterId: string }> }
 ) {
   try {
     const { userId } = await auth();

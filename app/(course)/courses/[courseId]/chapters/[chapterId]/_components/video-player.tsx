@@ -56,6 +56,7 @@ export const VideoPlayer = ({
           onEnded={() => {}}
           autoPlay
           playbackId={playbackId}
+          playerInitTime={0}
         />
       )}
     </div>

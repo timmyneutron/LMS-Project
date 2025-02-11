@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string, attachmentId: string }}
+  { params }: { params: Promise<{ courseId: string, attachmentId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -13,8 +13,8 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { courseId, attachmentId } = params;
-
+    const { courseId, attachmentId } = await params;
+    
     const courseOwner = await db.course.findUnique({
       where: {
         id: courseId,

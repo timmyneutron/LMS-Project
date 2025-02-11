@@ -77,17 +77,18 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params } : { params: { courseId: string } }
+  { params } : { params: Promise<{ courseId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { courseId } = params;
-    const values = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { courseId } = await params;
+    const values = await req.json();
+    
     const course = await db.course.update({
       where: {
         id: courseId,
