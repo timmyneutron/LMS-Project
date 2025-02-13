@@ -15,7 +15,7 @@ const uploadThingRegex = /^https:\/\/utfs.io\/f\/(?<key>[a-zA-Z0-9]*)$/;
 
 export async function DELETE(
   req: Request,
-  { params } : { params: { courseId: string } }
+  { params } : { params: Promise<{ courseId: string }> }
 ) {
   try {
     const { userId } = await auth();
