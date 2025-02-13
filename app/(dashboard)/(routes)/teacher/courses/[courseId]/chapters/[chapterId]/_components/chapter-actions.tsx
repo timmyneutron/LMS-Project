@@ -7,7 +7,6 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { set } from "zod";
 
 interface ChapterActionsProps {
   disabled: boolean;
@@ -36,7 +35,7 @@ export const ChapterActions = ({
         toast.success("Chapter published successfully");
       }
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
@@ -49,7 +48,7 @@ export const ChapterActions = ({
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted successfully");
       router.push(`/teacher/courses/${courseId}`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete chapter");
     } finally {
       setIsLoading(false);

@@ -1,6 +1,5 @@
 import { getChapter } from "@/actions/get-chapter";
 import { Banner } from "@/components/banner";
-import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { VideoPlayer } from "./_components/video-player";
@@ -67,7 +66,7 @@ const ChapterIdPage = async ({
             title={chapter.title}
             courseId={courseId}
             nextChapterId={nextChapter?.id}
-            playbackId={muxData?.playbackId!}
+            playbackId={muxData?.playbackId || ""}
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}
           />

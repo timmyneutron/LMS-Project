@@ -2,23 +2,20 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { FileUp, ImageIcon, Pencil, PlusCircle, File, Loader2, X } from "lucide-react";
+import { PlusCircle, File, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Attachment, Course } from "@prisma/client";
-import Image from "next/image";
-import { FileUpload } from "@/components/file-upload";
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
   courseId: string;
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const formSchema = z.object({
   url: z.string().min(1),
 });
@@ -52,7 +49,7 @@ const AttachmentForm = ({
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
       toast.success("Attachment deleted");
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setDeletingId(null);

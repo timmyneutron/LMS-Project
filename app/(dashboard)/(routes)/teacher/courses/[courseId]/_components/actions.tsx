@@ -8,7 +8,6 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { set } from "zod";
 
 interface ActionsProps {
   disabled: boolean;
@@ -37,7 +36,7 @@ export const Actions = ({
         confetti.onOpen();
       }
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
@@ -51,7 +50,7 @@ export const Actions = ({
       toast.success("Course deleted successfully");
       router.refresh();
       router.push(`/teacher/courses`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete course");
     } finally {
       setIsLoading(false);

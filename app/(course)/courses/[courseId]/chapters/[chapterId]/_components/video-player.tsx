@@ -9,7 +9,6 @@ import { Loader2, Lock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
-import { on } from "events";
 
 interface VideoPlayerProps {
   playbackId: string;
@@ -52,7 +51,7 @@ export const VideoPlayer = ({
           router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
         }
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong.");
     }
   };

@@ -16,8 +16,9 @@ interface ChapterVideoFormProps {
   initialData: Chapter & { muxData?: MuxData | null };
   courseId: string;
   chapterId: string;
-}
+};
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const formSchema = z.object({
   videoUrl: z.string().min(1),
 });
