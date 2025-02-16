@@ -15,4 +15,4 @@ Stack used:
 - Mux for video management and playback
 
 ## Getting Started
-Visit the demo site at [https://lms.timmyneutron.com](https://lms.timmyneutron.com). You'll need to sign in to view - you can either use a Gmail account or a dummy email/password.
+Visit the demo site at [https://lms.timmyneutron.com](https://lms.timmyneutron.com). You'll need to sign in to view - you can use a Gmail or Apple account or a dummy email/password.
