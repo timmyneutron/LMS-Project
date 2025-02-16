@@ -16,3 +16,6 @@ Stack used:
 
 ## Getting Started
 Visit the demo site at [https://lms.timmyneutron.com](https://lms.timmyneutron.com). You'll need to sign in to view - you can use a Gmail or Apple account or a dummy email/password.
+
+## Demo Video
+Watch the demo video at [https://youtu.be/DCPTsjVlkOw](https://youtu.be/DCPTsjVlkOw).
